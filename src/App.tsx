@@ -1,9 +1,29 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import {NavLink, Route, Routes} from "react-router-dom";
 import Test from "./Component/Test";
+import {authAPI} from "./api/api";
 
 function App() {
+
+    useEffect(() => {
+       /* authAPI.register({email:"trololo@mail.ru", password: "12345678QWE"})
+            .then((res) => {
+                console.log(res)
+            })*/
+
+
+        authAPI.login({email:"trololo@mail.ru", password: "12345678QWE", rememberMe: false})
+            .then ((res)=> {
+                console.log(res.data)
+            })
+
+
+        authAPI.me()
+            .then((res) => {
+                console.log(res.data)
+            })
+    }, [])
   return (
     <div>
       {/*<div>
@@ -15,6 +35,7 @@ function App() {
         <NavLink to={'/404'}>404</NavLink>
       </div>
 */}
+
 
 
       // why not
