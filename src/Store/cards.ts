@@ -8,7 +8,7 @@ type initStateType = {
 
 export const cardReducer = (state: initStateType = initState, action: any): initStateType => {
     switch (action.type) {
-        case '': {
+        case "": {
             return state
         }
         default:
