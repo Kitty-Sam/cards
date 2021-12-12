@@ -11,7 +11,7 @@ const Test = () => {
             placeholder="enter smth?"/>
 
             <SuperButton>
-               press me again
+               press me againsss
             </SuperButton>
 
             <SuperCheckbox
