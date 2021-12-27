@@ -26,7 +26,9 @@ function App() {
                 <NavLink to={'registration'}>registration</NavLink>---
                 <NavLink to={'recover'}>recover</NavLink>---
                 <NavLink to={'*'}>404</NavLink>---
-                <NavLink to={'newPassword/:token'}>create new</NavLink>
+                <NavLink to={'newPassword/:token'}>create new</NavLink>---
+                <NavLink to={'packs'}>packs</NavLink>----
+                <NavLink to={'cards'}>cards</NavLink>
             </div>
 
             {statusApp === requestStatus.loading ? <div> loading... </div> :  <RoutesPart/>  }

@@ -5,6 +5,7 @@ import thunk from 'redux-thunk';
 import {AppReducer} from "../Component/Registration/AppAC";
 import {ErrorReducer} from "../Component/Registration/ErrorAC";
 import {LoginReducer} from "../Component/Login/LoginTC";
+import { PacksReducer } from '../Component/Packs/PacksTC';
 
 
 const reducers = combineReducers({
@@ -13,6 +14,7 @@ const reducers = combineReducers({
     app: AppReducer,
     errors: ErrorReducer,
     login: LoginReducer,
+    packs: PacksReducer
 })
 const store = createStore(reducers, applyMiddleware(thunk))
 

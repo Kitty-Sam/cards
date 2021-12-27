@@ -1,0 +1,21 @@
+.content {
+    min-width: 1000px;
+    min-height: 400px;
+    border: 2px solid black;
+}
+.table {
+    display: flex;
+}
+.tableEl {
+    width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+.tableElSmall{
+     width: 100px;
+}
+.selectedPage {
+    font-weight: bold;
+    background-color: antiquewhite;
+}
