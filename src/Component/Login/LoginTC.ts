@@ -18,7 +18,7 @@ type InitialStateType = {
 }
 
 
-type UserType = {
+export type UserType = {
     _id: string;
     email: string;
     name: string;
@@ -52,7 +52,7 @@ const loginToggleAC = (isLoggedIn: boolean) => (
 )
 
 
-const setUserDataAC = (user: UserType) => (
+export const setUserDataAC = (user: UserType) => (
     {type: "LOGIN/SET_USER_DATA", user} as const
 )
 
