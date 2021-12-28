@@ -5,6 +5,7 @@ import { updatedPackType } from '../../api/packsApi';
 import {AppStoreType} from '../../Store/store';
 import {addPackTC, PacksTC, PackTemplate, removePackTC, ResponsePacksType, setCurrentPageAC, updatedPackTC} from './PacksTC';
 import Pagination from './Pagination';
+import Sort from './Sort';
 import styleTable from "./Table.module.css";
 
 const Table = () => {
@@ -93,9 +94,9 @@ const Table = () => {
             
             <div className={styleTable.table}>
                 <div className={styleTable.tableEl}>Name</div>
-                <div className={styleTable.tableElSmall}>CardsCount</div>
+                <div className={styleTable.tableElSmall}>CardsCount<Sort/></div>
                 <div className={styleTable.tableEl}>Created by</div>
-                <div className={styleTable.tableEl}>Updated</div>
+                <div className={styleTable.tableEl}>Updated<Sort/></div>
             </div>
             {resultPacks}
         </div>
