@@ -23,9 +23,13 @@ export type PackTemplate = {
 }
 
 
+const PACKS_SET_CURRENT_PAGE = "PACKS/SET_CURRENT_PAGE";
+const PACKS_SET_TOTAL_COUNT = "PACKS_SET_TOTAL_COUNT";
+
+
 const initialState = {
     cardPacks: [],
-    cardPacksTotalCount: 0,
+    cardPacksTotalCount: 0, //общее число репо
     maxCardsCount: 0,
     minCardsCount: 0,
     page: 1,
@@ -35,11 +39,11 @@ const initialState = {
 
 export type ResponsePacksType = {
     cardPacks: PackTemplate[];
-    cardPacksTotalCount: number;
+    cardPacksTotalCount: number; //общее количество страниц
     maxCardsCount: number;
     minCardsCount: number;
-    page: number;
-    pageCount: number;
+    page: number; //номер страницы
+    pageCount: number; //на странице
 }
 
 export const PacksReducer = (state: ResponsePacksType = initialState, action: ActionsType) => {
@@ -47,10 +51,10 @@ export const PacksReducer = (state: ResponsePacksType = initialState, action: Ac
         case "PACKS/SET_PACKS" :
             return {...state, ...action.payload}
 
-        case "PACKS/SET_CURRENT_PAGE" :
+        case PACKS_SET_CURRENT_PAGE :
             return {...state, page: action.currentPage}
 
-        case "PACKS/SET_TOTAL_COUNT" :
+        case PACKS_SET_TOTAL_COUNT :
             return {...state, cardPacksTotalCount: action.cardPacksTotalCount}
 
         case "PACKS/REMOVE_PACK" :
@@ -72,11 +76,11 @@ const setPacksAC = (payload: ResponsePacksType) => (
 )
 
 export const setCurrentPageAC = (currentPage: number) => (
-    {type: "PACKS/SET_CURRENT_PAGE", currentPage} as const
+    {type: PACKS_SET_CURRENT_PAGE, currentPage} as const
 )
 
 export const setTotalCountAC = (cardPacksTotalCount: number) => (
-    {type: "PACKS/SET_TOTAL_COUNT", cardPacksTotalCount} as const
+    {type: PACKS_SET_TOTAL_COUNT, cardPacksTotalCount} as const
 )
 
 
@@ -98,11 +102,12 @@ type ActionsType =
     | ReturnType<typeof addPackAC>
 
 
-export const PacksTC = () => (dispatch: Dispatch, getState: any) => {
-    const {page, pageCount, cardPacksTotalCount} = getState().packs
+export const PacksTC = (page: number = 1) => (dispatch: Dispatch, getState: any) => {
+    const {pageCount, cardPacksTotalCount} = getState().packs
 
     dispatch(appStatusToggleAC(requestStatus.loading))
-    packsAPI.getPacks(page, pageCount).then((res) => {
+    packsAPI.getPacks({page, pageCount}).then((res) => {
+        dispatch(setCurrentPageAC(page))
         dispatch(setPacksAC(res.data))
         dispatch(appStatusToggleAC(requestStatus.succeeded))
     })
@@ -180,11 +185,8 @@ export const sortMyPacksTC = () => (dispatch: Dispatch, getState: any) => {
     const {cardPacks, page, pageCount, cardPacksTotalCount} = getState().packs
     const {_id} = getState().login.user
 
-    console.log("return")
-    console.log("_id", _id)
-    
     dispatch(appStatusToggleAC(requestStatus.loading))
-    packsAPI.sortPacks(page, pageCount, _id).then((res) => {
+    packsAPI.getPacks({user_id: _id, page, pageCount}).then((res) => {
         console.log("res.data", res.data)
         dispatch(setPacksAC(res.data))
         dispatch(appStatusToggleAC(requestStatus.succeeded))
@@ -198,6 +200,50 @@ export const sortMyPacksTC = () => (dispatch: Dispatch, getState: any) => {
             dispatch(setNetworkErrorAC(errorNetwork))
         })
 }
+
+export const sortUpPacksTC = (sortPacks: string ) => (dispatch: Dispatch, getState: any) => {
+    const {cardPacks, page, pageCount, cardPacksTotalCount} = getState().packs
+    dispatch(appStatusToggleAC(requestStatus.loading))
+    packsAPI.getPacks({sortPacks, page, pageCount}).then((res) => {
+        
+        console.log("res.data", res.data)
+        dispatch(setPacksAC(res.data))
+        
+        dispatch(appStatusToggleAC(requestStatus.succeeded))
+    })
+        .catch((e: AxiosError) => {
+            dispatch(appStatusToggleAC(requestStatus.failed))
+            const errorNetwork = e.response
+                ? e.response.data.error
+                : `${e.message}, more details in the console`
+            console.log(errorNetwork)
+            dispatch(setNetworkErrorAC(errorNetwork))
+        })
+}
+
+export const searchPacksTC = (searchName: string ) => (dispatch: Dispatch, getState: any) => {
+    const {cardPacks, page, pageCount, cardPacksTotalCount} = getState().packs
+    dispatch(appStatusToggleAC(requestStatus.loading))
+    packsAPI.getPacks({packName: searchName, page, pageCount} ).then((res) => {
+
+        console.log("res.data", res.data)
+        dispatch(setPacksAC(res.data))
+
+        dispatch(appStatusToggleAC(requestStatus.succeeded))
+    })
+        .catch((e: AxiosError) => {
+            dispatch(appStatusToggleAC(requestStatus.failed))
+            const errorNetwork = e.response
+                ? e.response.data.error
+                : `${e.message}, more details in the console`
+            console.log(errorNetwork)
+            dispatch(setNetworkErrorAC(errorNetwork))
+        })
+}
+
+
+
+
 
 
 

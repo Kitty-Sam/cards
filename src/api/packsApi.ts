@@ -5,26 +5,48 @@ const instance = axios.create({
     withCredentials: true
 
 })
+export type dataRequestType = {
+    page?: number,
+    pageCount?: number,
+    min?: number,
+    max? : number,
+    sortPacks? : string,
+    user_id? : string,
+    packName? : string
+}
+
 
 
 export const packsAPI = {
-    getPacks(page?: number, pageCount?: number, min?: number, max?: number, sortPacks?: string, user_id?: string) {
+    getPacks(data:dataRequestType) {
         return instance.get<any, AxiosResponse<any>>(
-            'cards/pack', {params: {page, pageCount, min, max, sortPacks, user_id}});
+            'cards/pack', {params: {...data}});
     },
+   /* sortPacks(page?: number, pageCount?: number, user_id?: string) {
+        return instance.get<any, AxiosResponse<any>>(
+            'cards/pack', {params: {page, pageCount, user_id}})
+    },
+
+    sortUpDownPacks(page?: number, pageCount?: number, sortPacks?: string) {
+        return instance.get<any, AxiosResponse<any>>(
+            'cards/pack', {params: {page, pageCount, sortPacks}})
+    },
+
+    searchPacks(searchWord: string, page?: number, pageCount?: number) {
+        return instance.get<any, AxiosResponse<any>>(
+            `cards/pack?packName=${searchWord}`, {params: {page, pageCount}})
+    },*/
+
+
     removePack(id: string) {
         return instance.delete<any, AxiosResponse<any>>(`cards/pack?id=${id}`);
     },
     addPack(cardsPack: cardsPackType) {
-        return instance.post<any, AxiosResponse<any>>('cards/pack', { cardsPack });
+        return instance.post<any, AxiosResponse<any>>('cards/pack', {cardsPack});
     },
     updatePack(updatedPack: any) {
-        return instance.put<any, AxiosResponse<any>>('cards/pack', updatedPack );
+        return instance.put<any, AxiosResponse<any>>('cards/pack', updatedPack);
     },
-    sortPacks( page?: number, pageCount?: number, user_id?: string){
-        return instance.get<any, AxiosResponse<any>>(
-            'cards/pack', {params: {page, pageCount, user_id}})}
-
 
 
 };

@@ -21,7 +21,9 @@ const RoutesPart = () => {
                 <Route path={'*'} element={<Navigate to='/404'/>}/>
                 <Route path={'recover'} element={<ForgotPassword/>}/>
                 <Route path={'packs'} element={<Packs/>}/>
-                <Route path={'cards'} element={<Cards/>}/>
+                <Route path={'cards'} element={<Cards/>}>
+                    <Route path=":cardsPack_id" element={<Cards />} />
+                </Route>
                 <Route path={'newPassword'} element={<CreateNewPassword/>}>
                     <Route path=":token" element={<CreateNewPassword/>}/>
                 </Route>
