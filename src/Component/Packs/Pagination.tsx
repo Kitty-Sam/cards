@@ -9,36 +9,58 @@ export type PaginationPropsType = {
     currentPage: number
 }
 
-const Pagination = (props: PaginationPropsType) => {
+export const Pagination = (props: PaginationPropsType) => {
+    const pages: number[] = [];
+    let pagesCount = Math.ceil(props.totalCount / props.pageCount )
+    createPages(pages, props.totalCount,props.currentPage )
 
-    let pagesCount = Math.ceil(props.totalCount / props.pageCount / 9)
+    function createPages(pages: number[], pagesCount: number, currentPage: number) {
+        if (pagesCount > 20) {
+            if (currentPage > 10) {
+                for (let i = currentPage - 4; i <= currentPage + 5; i++) {
+                    pages.push(i)
+                    if (i == pagesCount) break
+                }
+            } else {
+                for (let i = 1; i <= 15; i++) {
+                    pages.push(i)
+                    if (i == pagesCount) break
+                }
+            }
+        } else {
+            for (let i = 1; i <= pagesCount; i++) {
+                pages.push(i)
+            }
+        }
+    }
+
+
+
+  /*  let pagesCount = Math.ceil(props.totalCount / props.pageCount / 30)
     let pages = [];
     for (let i = 1; i <= pagesCount; i++) {
         pages.push(i)
     }
-
-    const dispatch = useDispatch();
     const onPaginationPaged = (page: number) => {
-        dispatch(setCurrentPageAC(page))
-        dispatch(PacksTC())
+        dispatch(PacksTC(page))
     }
+*/
+    const dispatch = useDispatch();
 
+    return (
+        <div>
 
+            {pages.map((page: number, index) => <button key={index}
+                                                        className={props.currentPage === page ? styleTable.selectedPage : ""}
 
-return (
-    <div>
+                                                        onClick={() => {
+                                                            dispatch(setCurrentPageAC(page))
+                                                            dispatch(PacksTC(page))
+                                                        }}
 
-        {pages.map((page: number, index) => <button key={index}
-                                                    className={props.currentPage === page ? styleTable.selectedPage : ""}
+            >{page}</button>)}
 
-                                                    onClick={() => {
-                                                        onPaginationPaged(page)
-                                                    }}
-
-        >{page}</button>)}
-
-    </div>
-);
+        </div>
+    );
 };
 
-export default Pagination;

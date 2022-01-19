@@ -18,4 +18,5 @@
 .selectedPage {
     font-weight: bold;
     background-color: antiquewhite;
+    cursor: pointer;
 }
